@@ -1,0 +1,76 @@
+/* Base Tailwind imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px); /* Move element up */
+  }
+  100% {
+    transform: translateY(0px); /* Return to original position */
+  }
+}
+
+/* Fade-in animation with upward movement */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Start 20px below final position */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* Move to final position while fading in */
+  }
+}
+
+@layer utilities {
+  /* Continuous floating animation utility */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Intersection Observer triggered fade-in section */
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, visibility; /* Optimize for animations */
+  }
+
+  /* Visible state for fade-in sections */
+  .fade-in-section.is-visible {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  /* Staggered fade-in animation for child elements */
+  .stagger-fade-in > * {
+    animation: fade-in-up 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Staggered delays for up to 6 children */
+  .stagger-fade-in > *:nth-child(1) { animation-delay: 0s; }
+  .stagger-fade-in > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-fade-in > *:nth-child(3) { animation-delay: 0.2s; }
+  .stagger-fade-in > *:nth-child(4) { animation-delay: 0.3s; }
+  .stagger-fade-in > *:nth-child(5) { animation-delay: 0.4s; }
+  .stagger-fade-in > *:nth-child(6) { animation-delay: 0.5s; }
+
+  /* Swinging animation for 404 page */
+  @keyframes swing {
+    0%, 100% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+}

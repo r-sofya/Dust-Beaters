@@ -1,43 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { useEffect, useState } from 'react';
 
-export default function Terms() {
-  // URL of the Terms document (Markdown or plain text)
-  const TERMS_URL = '/src/assets/terms.md'; // Local Markdown file
+// NOTE: Requires 'markdown-it' package. Install with: npm install markdown-it
 
-  const [content, setContent] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+const Terms = () => {
+  const [content, setContent] = useState('');
+  const [md, setMd] = useState<any>(null);
 
   useEffect(() => {
-    fetch(TERMS_URL)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch Terms document.');
-        return res.text();
-      })
-      .then((text) => {
-        setContent(text);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    import('markdown-it').then((markdownIt) => {
+      setMd(new markdownIt.default());
+    });
+    fetch('/src/assets/terms.md')
+      .then((res) => res.text())
+      .then(setContent);
   }, []);
 
   return (
-    <div className="py-24 bg-gray-50 min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Terms &amp; Conditions</h1>
-        <div className="prose prose-blue max-w-none">
-          {loading && <p>Loading Terms...</p>}
-          {error && <p className="text-red-600">{error}</p>}
-          {!loading && !error && <ReactMarkdown>{content}</ReactMarkdown>}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 drop-shadow">Terms and Conditions</h1>
+          <p className="text-xl text-gray-600">Last updated: May 28, 2025</p>
         </div>
-        <div className="mt-6 text-sm text-gray-400 text-center">
-          <p>To update these Terms, edit <code>src/assets/terms.md</code> in your project.</p>
+        <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border border-blue-100">
+          <div className="prose prose-blue prose-lg max-w-none"
+            style={{
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontWeight: 400,
+            }}
+          >
+            {md ? (
+              <div
+                className="[&>hr]:my-12 [&>h2]:mt-12 [&>h2]:mb-4 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-gray-900 [&>h3]:mt-8 [&>h3]:mb-2 [&>h3]:text-xl [&>h3]:font-semibold [&>ul]:mb-6 [&>ol]:mb-6 [&>p]:mb-6 [&>strong]:font-semibold"
+                dangerouslySetInnerHTML={{ __html: md.render(content) }}
+              />
+            ) : (
+              <div className="text-center text-blue-600">Loading terms...</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Terms;

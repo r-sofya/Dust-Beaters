@@ -41,7 +41,6 @@ export function Footer() {
                   { label: 'About Us', href: '/about' },
                   { label: 'Contact', href: '/contact' },
                   { label: 'Request Quote', href: '/requestquote' },
-                  { label: 'Terms & Conditions', href: '/terms' },
                 ].map((link) => (
                   <li key={link.href}>
                     <Link
@@ -61,7 +60,7 @@ export function Footer() {
               <ul className="space-y-3">
                 <li className="flex items-center group">
                   <Phone className="h-5 w-5 mr-3 group-hover:text-white transition-colors duration-200" />
-                  <span className="text-sm group-hover:text-white transition-colors duration-200">(289) 914-1643</span>
+                  <span className="text-sm group-hover:text-white transition-colors duration-200">(555) 123-4567</span>
                 </li>
                 <li className="flex items-center group">
                   <Mail className="h-5 w-5 mr-3 group-hover:text-white transition-colors duration-200" />
@@ -88,7 +87,7 @@ export function Footer() {
                 Privacy Policy
               </Link>
               <Link to="/terms" className="hover:text-white text-sm transition-colors duration-200">
-                Terms & Conditions
+                Terms of Service
               </Link>
             </div>
           </div>

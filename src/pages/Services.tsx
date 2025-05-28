@@ -77,6 +77,34 @@ export function Services() {
             </a>
           </div>
         </div>
+
+        {/* FAQ Section */}
+        <div className="mt-24">
+          <h2 className="text-3xl font-bold text-gray-900 text-center">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-12 max-w-3xl mx-auto">
+            {[
+              {
+                question: "How do you calculate per square foot pricing?",
+                answer: "Our pricing is based on several factors including space size, cleaning frequency, specific requirements, and type of facility. We provide detailed quotes after assessing your space."
+              },
+              {
+                question: "Can I customize the cleaning frequency?",
+                answer: "Yes! We offer flexible scheduling options and can customize the cleaning frequency based on your needs and budget."
+              },
+              {
+                question: "What's included in the square footage calculation?",
+                answer: "We calculate based on the total cleanable space, including offices, common areas, bathrooms, and other spaces requiring service."
+              }
+            ].map((faq, index) => (
+              <div key={index} className="mt-8 first:mt-0">
+                <h3 className="text-lg font-semibold text-gray-900">{faq.question}</h3>
+                <p className="mt-2 text-gray-600">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

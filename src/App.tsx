@@ -3,13 +3,12 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 
-// Lazy load only the pages that exist
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Services = lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
 const About = lazy(() => import('./pages/About').then(module => ({ default: module.About })));
 const Contact = lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })));
-const RequestQuote = lazy(() => import('./pages/RequestQuote'));
-const Terms = lazy(() => import('./pages/Terms'));
+const RequestQuote = lazy(() => import('./pages/RequestQuote').then(module => ({ default: module.default })));
+const Terms = lazy(() => import('./pages/Terms').then(module => ({ default: module.default })));
 
 /**
  * ScrollToTop Component

@@ -9,6 +9,7 @@ const Services = lazy(() => import('./pages/Services').then(module => ({ default
 const About = lazy(() => import('./pages/About').then(module => ({ default: module.About })));
 const Contact = lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })));
 const RequestQuote = lazy(() => import('./pages/RequestQuote'));
+const Terms = lazy(() => import('./pages/Terms'));
 
 /**
  * ScrollToTop Component
@@ -49,6 +50,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/requestquote" element={<RequestQuote />} />
+                    <Route path="/terms" element={<Terms />} />
                     <Route path="*" element={<div className='text-center py-24 text-2xl'>Page Not Found</div>} />
                   </Routes>
                 </Suspense>

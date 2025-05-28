@@ -41,6 +41,7 @@ export function Footer() {
                   { label: 'About Us', href: '/about' },
                   { label: 'Contact', href: '/contact' },
                   { label: 'Request Quote', href: '/requestquote' },
+                  { label: 'Terms & Conditions', href: '/terms' },
                 ].map((link) => (
                   <li key={link.href}>
                     <Link
@@ -87,7 +88,7 @@ export function Footer() {
                 Privacy Policy
               </Link>
               <Link to="/terms" className="hover:text-white text-sm transition-colors duration-200">
-                Terms of Service
+                Terms & Conditions
               </Link>
             </div>
           </div>

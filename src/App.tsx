@@ -8,7 +8,7 @@ const Home = lazy(() => import('./pages/Home').then(module => ({ default: module
 const Services = lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
 const About = lazy(() => import('./pages/About').then(module => ({ default: module.About })));
 const Contact = lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })));
-const RequestQuote = lazy(() => import('./pages/RequestQuote').then(module => ({ default: module.RequestQuote })));
+const RequestQuote = lazy(() => import('./pages/RequestQuote'));
 
 /**
  * ScrollToTop Component

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Clock, Leaf, ArrowRight } from 'lucide-react';
 
@@ -30,7 +29,7 @@ export function Hero() {
               
               <div className="mt-8 flex items-center gap-x-6 animate-fade-in-up [animation-delay:400ms]">
                 <Link
-                  to="/quote"
+                  to="/requestquote"
                   className="group relative rounded-full bg-blue-600 px-8 py-3 text-lg font-semibold text-white transition-all duration-300 hover:bg-blue-500 hover:shadow-lg hover:-translate-y-1"
                 >
                   Request a Quote
@@ -80,14 +79,14 @@ export function Hero() {
           </div>
           
           <div className="relative lg:col-span-5 lg:-mr-8 xl:absolute xl:inset-0 xl:left-1/2 xl:mr-0">
-            <div className="relative h-full">
+            <div className="relative h-full overflow-visible">
               <img
                 className="aspect-[3/2] w-full rounded-2xl bg-gray-50 object-cover lg:absolute lg:inset-0 lg:aspect-auto lg:h-full shadow-2xl transition-all duration-300 hover:shadow-xl"
                 src="https://images.pexels.com/photos/5218001/pexels-photo-5218001.jpeg"
                 alt="Professional cleaning team in red uniforms working together in a modern space"
               />
               {/* Floating Elements */}
-              <div className="absolute -left-4 top-1/4 animate-float">
+              <div className="absolute -left-4 top-1/4 animate-float z-10">
                 <div className="rounded-2xl bg-white p-3 shadow-lg">
                   <div className="flex items-center space-x-2">
                     <div className="h-2.5 w-2.5 rounded-full bg-green-400"></div>
@@ -95,11 +94,11 @@ export function Hero() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -right-4 bottom-1/4 animate-float [animation-delay:1000ms]">
+              <div className="absolute right-4 bottom-1/4 animate-float [animation-delay:1000ms] z-10">
                 <div className="rounded-2xl bg-white p-3 shadow-lg">
                   <div className="flex items-center space-x-2">
                     <div className="h-2.5 w-2.5 rounded-full bg-blue-400"></div>
-                    <span className="text-sm font-medium">100% Satisfaction</span>
+                    <span className="text-sm font-medium whitespace-nowrap">100% Satisfaction</span>
                   </div>
                 </div>
               </div>

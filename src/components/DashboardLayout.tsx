@@ -10,7 +10,6 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -22,7 +21,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
     navigate('/login');
   };
 

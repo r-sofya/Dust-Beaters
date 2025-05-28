@@ -60,7 +60,7 @@ export function Footer() {
               <ul className="space-y-3">
                 <li className="flex items-center group">
                   <Phone className="h-5 w-5 mr-3 group-hover:text-white transition-colors duration-200" />
-                  <span className="text-sm group-hover:text-white transition-colors duration-200">(555) 123-4567</span>
+                  <span className="text-sm group-hover:text-white transition-colors duration-200">(289) 914-1643</span>
                 </li>
                 <li className="flex items-center group">
                   <Mail className="h-5 w-5 mr-3 group-hover:text-white transition-colors duration-200" />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, Clock } from 'lucide-react';
 
 export function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
@@ -85,7 +85,7 @@ export function Contact() {
                   <Phone className="h-6 w-6 text-blue-600 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">(555) 123-4567</p>
+                    <p className="text-gray-600">(289) 914-1643</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -96,31 +96,15 @@ export function Contact() {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <MapPin className="h-6 w-6 text-blue-600 mr-3" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">1234 Clean Street</p>
-                    <p className="text-gray-600">Business District</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
                   <Clock className="h-6 w-6 text-blue-600 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Hours</p>
-                    <p className="text-gray-600">Monday - Friday: 8am - 6pm</p>
-                    <p className="text-gray-600">Saturday: 9am - 2pm</p>
+                    <p className="text-gray-600">Monday - Friday: 8am - 10pm</p>
+                    <p className="text-gray-600">Saturday: 9am - 9pm</p>
                     <p className="text-gray-600">Sunday: Closed</p>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Emergency Service</h2>
-              <p className="text-gray-600 mb-4">
-                24/7 emergency cleaning service available for urgent situations.
-              </p>
-              <p className="text-gray-900 font-semibold">Emergency Hotline: (555) 999-8888</p>
             </div>
           </div>
         </div>

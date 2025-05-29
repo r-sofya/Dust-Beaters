@@ -1,7 +1,6 @@
-/* Base Tailwind imports (uncomment these lines if using Tailwind's build process) */
-/* @tailwind base; */
-/* @tailwind components; */
-/* @tailwind utilities; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Floating animation for decorative elements */
 @keyframes float {

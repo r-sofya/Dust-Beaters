@@ -78,7 +78,7 @@ export function Home() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold text-white">Ready to Transform Your Space?</h2>
             <p className="mt-4 text-xl text-blue-100 max-w-2xl mx-auto">
-              Join hundreds of satisfied businesses who trust DustBeaters for their cleaning needs.
+              Experience the difference professional cleaning makes. Let us help you create a workspace that shines.
             </p>
             <div className="mt-10">
               <a

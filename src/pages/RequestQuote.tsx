@@ -543,7 +543,7 @@ export function RequestQuote() {
                     required
                     className="mt-1 block w-full h-11 px-4 rounded-lg border border-gray-300 bg-white/50 shadow-sm focus:ring-0 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 outline-none"
                   >
-                    <option value="">Select frequency</option>
+                    <option value="">I'm not sure yet</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
                     <option value="biweekly">Bi-Weekly</option>

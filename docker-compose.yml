@@ -4,4 +4,6 @@ services:
   app:
     build: .
     restart: always
+    ports:
+      - "8080:80"
     container_name: dust-beaters

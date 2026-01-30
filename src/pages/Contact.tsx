@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Clock } from 'lucide-react';
+import { Mail, Phone, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('submitting');
+    setErrorMessage('');
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     try {
       const webhookUrl = import.meta.env.VITE_CONTACT_WEBHOOK_URL;
 
-      if (!webhookUrl) {
-        throw new Error('Webhook URL is not configured');
+      if (!webhookUrl || webhookUrl.includes('your-webhook-url')) {
+        throw new Error('Please configure a valid VITE_CONTACT_WEBHOOK_URL in your .env file');
       }
 
       const response = await fetch(webhookUrl, {
@@ -28,21 +31,23 @@ export function Contact() {
 
       if (response.ok) {
         setStatus('success');
-        e.currentTarget.reset();
-        alert('Thank you for your message. We will get back to you soon!');
+        form.reset();
+
       } else {
         const errorText = await response.text();
         console.error('Webhook failed:', response.status, response.statusText, errorText);
+        setErrorMessage(`Error: ${response.status} ${response.statusText}${errorText ? ` - ${errorText}` : ''}`);
         throw new Error(`Failed to send message: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error sending message:', error);
       setStatus('error');
-      alert(`Failed to send message: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    } finally {
-      if (status !== 'success') {
-        setStatus('idle');
+      if (!errorMessage) {
+        setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
       }
+
+    } finally {
+      // No-op: let success/error states persist
     }
   };
 
@@ -138,6 +143,24 @@ export function Contact() {
                   'Send Message'
                 )}
               </button>
+
+              {status === 'success' && (
+                <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start animate-fade-in">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <p className="ml-3 text-green-700 text-sm">
+                    Message sent successfully! We'll be in touch soon.
+                  </p>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start animate-fade-in">
+                  <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <p className="ml-3 text-red-700 text-sm">
+                    {errorMessage || 'Failed to send message. Please check your connection and try again.'}
+                  </p>
+                </div>
+              )}
             </form>
           </div>
 

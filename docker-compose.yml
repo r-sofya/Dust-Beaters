@@ -5,5 +5,11 @@ services:
     build: .
     restart: always
     ports:
-      - "8080:80"
+      - "80"
+    networks:
+      - dokploy-network
     container_name: dust-beaters
+
+networks:
+  dokploy-network:
+    external: true

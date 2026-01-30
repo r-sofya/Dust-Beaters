@@ -10,7 +10,7 @@ const Terms = () => {
     import('markdown-it').then((markdownIt) => {
       setMd(new markdownIt.default());
     });
-    fetch('/src/assets/terms.md')
+    fetch('/terms.md')
       .then((res) => res.text())
       .then(setContent);
   }, []);

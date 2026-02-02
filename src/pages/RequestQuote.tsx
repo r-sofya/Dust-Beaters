@@ -142,7 +142,7 @@ export function RequestQuote() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep(2)) {
       return;
@@ -150,16 +150,30 @@ export function RequestQuote() {
     setIsSubmitting(true);
     setSubmitError('');
     setShowMessages(true);
-    const data = new FormData();
-    data.append('form-name', 'quote-request');
-    Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value);
-    });
-    fetch('/', {
-      method: 'POST',
-      body: data
-    })
-      .then(() => {
+
+    // Combine form data with frequency details
+    const payload = {
+      ...formData,
+      frequencyDetails: formData.frequency === 'daily' || formData.frequency === 'weekly' || formData.frequency === 'biweekly' || formData.frequency === 'monthly' ? frequencyDetails : undefined,
+      formType: 'quote-request'
+    };
+
+    try {
+      const webhookUrl = import.meta.env.VITE_QUOTE_WEBHOOK_URL;
+
+      if (!webhookUrl || webhookUrl.includes('your-webhook-url')) {
+        throw new Error('Please configure a valid VITE_QUOTE_WEBHOOK_URL in your .env file');
+      }
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
         setSubmitSuccess(true);
         setFormData({
           firstName: '',
@@ -176,15 +190,23 @@ export function RequestQuote() {
           frequency: '',
           additionalInfo: ''
         });
+        setFrequencyDetails({
+          timesOfDay: [],
+          daysOfWeek: [],
+          monthlyCount: ''
+        });
         setCurrentStep(1);
-      })
-      .catch((error) => {
-        console.error('Form submission error:', error);
-        setSubmitError('Failed to submit quote request. Please try again later.');
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      } else {
+        const errorText = await response.text();
+        console.error('Webhook failed:', response.status, response.statusText, errorText);
+        throw new Error(`Failed to submit: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit quote request. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const steps = [
@@ -200,14 +222,14 @@ export function RequestQuote() {
       case 2:
         return formData.companyName && formData.address && formData.city && formData.state && formData.zip && formData.country;
       case 3:
-        return formData.squareFootage && formData.frequency;
+        return !!formData.squareFootage;
       default:
         return false;
     }
   };
 
   // Handle frequency detail changes
-  const handleFrequencyDetailChange = (type: string, value: string) => {
+  const handleFrequencyDetailChange = (_type: string, value: string) => {
     if (formData.frequency === 'daily') {
       setFrequencyDetails((prev: any) => {
         const arr = prev.timesOfDay.includes(value)
@@ -228,21 +250,6 @@ export function RequestQuote() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-24">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hidden form for Netlify */}
-        <form name="quote-request" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
-          <input type="text" name="firstName" />
-          <input type="text" name="lastName" />
-          <input type="email" name="email" />
-          <input type="tel" name="phone" />
-          <input type="text" name="companyName" />
-          <input type="text" name="address" />
-          <input type="text" name="city" />
-          <input type="text" name="state" />
-          <input type="text" name="zip" />
-          <input type="text" name="squareFootage" />
-          <input type="text" name="frequency" />
-          <textarea name="additionalInfo"></textarea>
-        </form>
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Request a Quote</h1>
@@ -261,8 +268,8 @@ export function RequestQuote() {
                     ${currentStep > step.number
                       ? 'bg-green-100 text-green-600'
                       : currentStep === step.number
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-400'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-400'
                     }
                   `}>
                     {currentStep > step.number ? (
@@ -294,16 +301,9 @@ export function RequestQuote() {
         {/* Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <form
-            onSubmit={handleSubmit} 
+            onSubmit={handleSubmit}
             className="space-y-6"
-            name="quote-request"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
           >
-            {/* Netlify Form Fields */}
-            <input type="hidden" name="form-name" value="quote-request" />
-            <input type="hidden" name="bot-field" />
             {/* Step 1: Contact Information */}
             {currentStep === 1 && (
               <div className="space-y-6">
@@ -411,11 +411,10 @@ export function RequestQuote() {
                       value={formData.address}
                       onChange={handleChange}
                       required
-                      className={`block w-full h-11 pl-10 pr-4 rounded-lg border ${
-                        validationErrors.address 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-300 focus:border-blue-500'
-                      } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
+                      className={`block w-full h-11 pl-10 pr-4 rounded-lg border ${validationErrors.address
+                        ? 'border-red-300 focus:border-red-500'
+                        : 'border-gray-300 focus:border-blue-500'
+                        } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
                       placeholder="123 Main St"
                     />
                     {validationErrors.address && (
@@ -470,11 +469,10 @@ export function RequestQuote() {
                       value={formData.state}
                       onChange={handleChange}
                       required
-                      className={`mt-1 block w-full h-11 px-4 rounded-lg border ${
-                        validationErrors.state 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-300 focus:border-blue-500'
-                      } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
+                      className={`mt-1 block w-full h-11 px-4 rounded-lg border ${validationErrors.state
+                        ? 'border-red-300 focus:border-red-500'
+                        : 'border-gray-300 focus:border-blue-500'
+                        } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
                     >
                       <option value="">Select {formData.country === 'United States' ? 'State' : 'Province'}</option>
                       {Object.entries(formData.country === 'United States' ? STATE_CODES : PROVINCE_CODES).map(([code, name]) => (
@@ -498,11 +496,10 @@ export function RequestQuote() {
                       onChange={handleChange}
                       placeholder={formData.country === 'United States' ? '12345' : 'A1A 1A1'}
                       required
-                      className={`mt-1 block w-full h-11 px-4 rounded-lg border ${
-                        validationErrors.zip 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-300 focus:border-blue-500'
-                      } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
+                      className={`mt-1 block w-full h-11 px-4 rounded-lg border ${validationErrors.zip
+                        ? 'border-red-300 focus:border-red-500'
+                        : 'border-gray-300 focus:border-blue-500'
+                        } bg-white/50 shadow-sm focus:ring-0 transition-all duration-200 hover:border-gray-400 outline-none`}
                     />
                     {validationErrors.zip && (
                       <p className="mt-1 text-sm text-red-600">{validationErrors.zip}</p>
@@ -540,7 +537,6 @@ export function RequestQuote() {
                       handleChange(e);
                       setFrequencyDetails({ timesOfDay: [], daysOfWeek: [], monthlyCount: '' });
                     }}
-                    required
                     className="mt-1 block w-full h-11 px-4 rounded-lg border border-gray-300 bg-white/50 shadow-sm focus:ring-0 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 outline-none"
                   >
                     <option value="">I'm not sure yet</option>
